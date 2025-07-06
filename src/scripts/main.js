@@ -2,15 +2,15 @@
 
 function waitFor(element, eventName) {
   return new Promise((resolve, reject) => {
-    element.addEventListener(eventName, (e) => {
-      const elementName = element.nodeName;
-      const elementId = element.id;
-      const message = `It was ${eventName} on the element: ${elementName}, id: ${elementId}.`;
+    function handler(e) {
+      const message = `It was ${eventName} on the element: ${element.nodeName}, id: ${element.id}.`;
 
-      if (e.target) {
-        resolve(message);
-      }
-    });
+      resolve(message);
+
+      element.removeEventListener(eventName, handler);
+    }
+
+    element.addEventListener(eventName, handler);
   });
 }
 
